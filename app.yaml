@@ -1,0 +1,30 @@
+application: agrihack
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /api/.*
+  script: backend.main.app
+
+- url: /css
+  static_dir: frontend/css
+
+- url: /font
+  static_dir: frontend/font
+
+- url: /img
+  static_dir: frontend/img
+
+- url: /js
+  static_dir: frontend/js
+
+- url: /.*
+  static_files: index.html
+  upload: frontend/index\.html
+
+libraries:
+- name: webapp2
+  version: "latest"
+
