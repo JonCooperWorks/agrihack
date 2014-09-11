@@ -2,6 +2,7 @@ import os
 
 from google.appengine.ext import testbed
 import webapp2
+import webapp2_extras
 import webtest
 
 from backend import main
