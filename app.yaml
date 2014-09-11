@@ -1,11 +1,17 @@
-application: agrihack
+application: node-420
 version: 1
 runtime: python27
-module: webapp
 api_version: 1
 threadsafe: yes
 
+inbound_services:
+- mail
+
 handlers:
+- url: /_ah/mail/.+ 
+  script: backend.main.app
+  login: admin
+
 - url: /api/.*
   script: backend.main.app
 
