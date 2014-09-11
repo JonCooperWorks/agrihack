@@ -3,10 +3,10 @@ test:
 
 
 serve:
-	@$(PYTHON) $(APPENGINE)/dev_appserver.py \
-		--host=$(SERVE_ADDRESS) \
-		--port=$(SERVE_PORT) \
-		.
+	dev_appserver.py \
+	--host=localhost \
+	--port=8080 \
+	.
 
 pyflakes:
 	@pyflakes .
