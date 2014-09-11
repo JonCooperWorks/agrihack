@@ -10,6 +10,7 @@ class SMSMessage(ndb.Model):
     body = ndb.StringProperty()
     sender = ndb.StringProperty()
 
+
 class Node(ndb.Model):
     name = ndb.StringProperty()
 
@@ -17,6 +18,3 @@ class Node(ndb.Model):
 class Crop(ndb.Model):
     name = ndb.StringProperty()
     # Ranges
-
-
-
