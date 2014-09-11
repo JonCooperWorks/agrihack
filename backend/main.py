@@ -1,15 +1,14 @@
 import webapp2
 
+import handlers
+import config
 
-class MainHandler(webapp2.RequestHandler):
-
-    def get(self):
-        self.response.write('Agrihack API')
 
 routes = [
-    ('/api', MainHandler),
+    ('/api/', handlers.MainHandler),
 ]
+
 
 app = webapp2.WSGIApplication(
     routes,
-    debug=True)
+    debug=config.DEBUG)
