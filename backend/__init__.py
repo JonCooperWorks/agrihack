@@ -51,8 +51,8 @@ class BaseHandler(webapp2.RequestHandler):
             if not contents or 'flushcache' in self.request.arguments():
                 contents = self.render_template(template, context)
 
-                # If add() returns False, it means another request is already trying
-                # to cache the page. No need to do anything here.
+                # If add() returns False, it means another request is already
+                # trying to cache the page. No need to do anything here.
                 if memcache.add('lock.%s' % cache_key, True):
                     memcache.set(cache_key, contents)
                     memcache.delete('lock.%s' % cache_key)
