@@ -7,3 +7,5 @@ six==1.7.3
 unittest2==0.5.1
 waitress==0.8.9
 wsgiref==0.1.2
+pep8
+pyflakes
