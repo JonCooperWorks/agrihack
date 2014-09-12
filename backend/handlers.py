@@ -1,16 +1,42 @@
-import logging
-import re
+import datetime
+import json
+import random
+import string
 
-from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
+from google.appengine.ext import ndb
 
 from backend import BaseHandler
-from models import SMSMessage
+from models import Farmer
 
 
 class MainHandler(BaseHandler):
 
     def get(self):
-        self.response.write('Agrihack API')
+        # If we've already imported farmers, don't bother to import them from
+        # the JSON file.
+        if Farmer.query().count() > 0:
+            return self.response.write(
+                json.dumps({'status': 'already_populated'}))
+
+        with open('attendees.json') as attendees_file:
+            attendees = json.loads(attendees_file.read())
+
+        farmers = []
+        for name, cell_number in attendees.iteritems():
+            first_name, last_name = name.split(' ')
+            farmers.append(Farmer(
+                first_name=first_name,
+                last_name=last_name,
+                cell_number=cell_number,
+                house_number=cell_number,
+                farmer_id=generate_farmer_id(),
+                verified=True,
+                dob=datetime.datetime.now() - datetime.timedelta(days=20*365),
+                main_activity='Farming',
+            ))
+
+        ndb.put_multi(farmers)
+        return self.response.write(json.dumps({'status': 'done'}))
 
 
 class SMSHandler(InboundMailHandler):
@@ -26,3 +52,8 @@ class SMSHandler(InboundMailHandler):
             sms_message = SMSMessage(body=body.decode(), sender=sender)
             sms_message.put()
             logging.info('Stored message from %s' % sender)
+
+
+def generate_farmer_id():
+    char_set = string.ascii_uppercase + string.digits
+    return ''.join(random.sample(char_set, 10))

@@ -1,11 +1,20 @@
+import json
+
 import unittest2
 
 from backend.test import TestCase
+from models import Farmer
 
 
-class MainHandlerTestCase(TestCase, unittest2.TestCase):
+class ImportHandlerTestCase(TestCase, unittest2.TestCase):
 
-    def test_get(self):
-        response = self.app.get('/api/')
+    def test_populate_farmers(self):
+        response = self.app.get('/import/')
         self.assertEqual(200, response.status_code)
-        self.assertIn('Agrihack', response.body)
+        self.assertEqual({'status': 'done'}, json.loads(response.body))
+
+    def test_farmers_populated_already(self):
+        Farmer().put()
+        response = self.app.get('/import/')
+        self.assertEqual(200, response.status_code)
+        self.assertEqual({'status': 'already_populated'}, json.loads(response.body))
