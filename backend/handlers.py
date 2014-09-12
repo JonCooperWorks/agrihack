@@ -70,7 +70,7 @@ class SMSHandler(InboundMailHandler):
         if mail_message.to == 'whoami@node-420.appspotmail.com':
             sender_num = mail_message.sender[:11]
             logging.info('Message received from: ' + sender_num)
-            return
+            sms_commands.reply_farmer_id(sender_num)
 
         for message in mail_message.bodies('text/html'):
             _, body = message
