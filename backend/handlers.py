@@ -41,7 +41,7 @@ class ImportHandler(BaseHandler):
                 main_activity='Farming',
             ))
 
-        ndb.put_multi(farmers)
+        ndb.put_multi(farmers + [Node(node_id='00420')])
         return self.json_response({'status': 'done'})
 
 

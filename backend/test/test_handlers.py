@@ -14,6 +14,7 @@ class ImportHandlerTestCase(TestCase, unittest2.TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual({'status': 'done'}, json.loads(response.body))
         self.assertGreater(Farmer.query().count(), 0)
+        self.assertEqual(1, Node.query().count())
 
     def test_farmers_populated_already(self):
         Farmer().put()
