@@ -63,7 +63,7 @@ class SMSHandler(InboundMailHandler):
     """Handles inbound SMS messages from farmers."""
 
     def receive(self, mail_message):
-        if mail_message.to == 'demo@node-420.appspot.com':
+        if mail_message.to == 'demo@node-420.appspotmail.com':
             logging.info('Message received')
             return
 
