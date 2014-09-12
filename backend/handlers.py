@@ -32,6 +32,10 @@ class MainHandler(BaseHandler):
                 farmer_id=generate_farmer_id(),
                 verified=True,
                 dob=datetime.datetime.now() - datetime.timedelta(days=20*365),
+                address='Computer Science Postgrab Lab',
+                alias=generate_alias(first_name, last_name),
+                farmer_idx=random.randint(1, 100000),
+                parish='UWI',
                 main_activity='Farming',
             ))
 
@@ -57,3 +61,7 @@ class SMSHandler(InboundMailHandler):
 def generate_farmer_id():
     char_set = string.ascii_uppercase + string.digits
     return ''.join(random.sample(char_set, 10))
+
+
+def generate_alias(first_name, last_name):
+    return first_name[0] + last_name[0] + 'izzle'
