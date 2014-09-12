@@ -79,7 +79,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 def send_sms(phone_number, body):
     return mail.send_mail(
-        sender='alerts@420-node.appspot.com',
+        sender='status@node-420.appspot.com',
         to='%s@digitextjm.com' % phone_number,
         subject='',
         body=body)
