@@ -23,7 +23,19 @@ class Farmer(ndb.Model):
 
 
 class Node(ndb.Model):
-    name = ndb.StringProperty()
+    node_id = ndb.StringProperty()
+
+    @classmethod
+    def get_by_node_id(cls, node_id):
+        return cls.query().filter(cls.node_id == node_id).get()
+
+
+class DataPoint(ndb.Model):
+    temperature = ndb.IntegerProperty()
+    pressure = ndb.IntegerProperty()
+    humidity = ndb.IntegerProperty()
+    light = ndb.IntegerProperty()
+    saturation = ndb.IntegerProperty()
 
 
 class Crop(ndb.Model):

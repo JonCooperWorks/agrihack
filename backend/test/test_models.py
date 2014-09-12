@@ -1,7 +1,7 @@
 import unittest2
 
 from backend.test import TestCase
-from backend.models import Farmer
+from backend.models import DataPoint, Farmer, Node
 
 
 class FarmerTestCase(TestCase, unittest2.TestCase):
@@ -20,3 +20,25 @@ class FarmerTestCase(TestCase, unittest2.TestCase):
         self.assertFalse(farmer.verified)
         self.assertIsNone(farmer.dob)
         self.assertIsNone(farmer.main_activity)
+
+
+class NodeTestCase(TestCase, unittest2.TestCase):
+
+    def test_defaults(self):
+        node = Node()
+        self.assertIsNone(node.node_id)
+
+    def test_get_by_node_id(self):
+        node = Node(node_id='TEST').put()
+        self.assertEqual(node, Node.get_by_node_id('TEST').key)
+
+
+class DataPointTestCase(TestCase, unittest2.TestCase):
+
+    def test_defaults(self):
+        data_point = DataPoint()
+        self.assertIsNone(data_point.humidity)
+        self.assertIsNone(data_point.light)
+        self.assertIsNone(data_point.pressure)
+        self.assertIsNone(data_point.saturation)
+        self.assertIsNone(data_point.temperature)
