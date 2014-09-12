@@ -33,7 +33,7 @@ class Node(ndb.Model):
     def get_by_node_id(cls, node_id):
         return cls.query().filter(cls.node_id == node_id).get()
 
-    def get_datapoints(self):
+    def data_points(self):
         return DataPoint.query(ancestor=self.key).fetch()
 
 

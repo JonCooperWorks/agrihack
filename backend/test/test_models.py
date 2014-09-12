@@ -39,13 +39,13 @@ class NodeTestCase(TestCase, unittest2.TestCase):
         node = Node(node_id='TEST').put()
         self.assertEqual(node, Node.get_by_node_id('TEST').key)
 
-    def test_get_datapoints(self):
+    def test_get_data_points(self):
         node = Node()
         node.put()
         for _ in range(10):
             DataPoint(parent=node.key).put()
 
-        self.assertEqual(10, len(node.get_datapoints()))
+        self.assertEqual(10, len(node.data_points()))
 
 
 class DataPointTestCase(TestCase, unittest2.TestCase):
