@@ -98,7 +98,7 @@ class DataPointHandler(BaseHandler):
 
         del sensor_data['node_id']
         DataPoint(parent=node.key, **sensor_data).put()
-        self.response.status_code = 201
+        self.response.status_int = 201
         return self.json_response({'status': 'success'})
 
 
