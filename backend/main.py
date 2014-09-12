@@ -1,7 +1,6 @@
 import webapp2
 
 import handlers
-import config
 
 
 routes = [
@@ -13,4 +12,4 @@ routes = [
 
 app = webapp2.WSGIApplication(
     routes,
-    debug=config.DEBUG)
+    debug=True)
