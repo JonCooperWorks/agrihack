@@ -21,6 +21,10 @@ class Farmer(ndb.Model):
     main_activity = ndb.StringProperty()
     field = ndb.StringProperty()
 
+    @classmethod
+    def get_by_farmer_id(cls, farmer_id):
+        return cls.query().filter(cls.farmer_id == farmer_id).get()
+
 
 class Node(ndb.Model):
     node_id = ndb.StringProperty()
@@ -29,6 +33,9 @@ class Node(ndb.Model):
     def get_by_node_id(cls, node_id):
         return cls.query().filter(cls.node_id == node_id).get()
 
+    def data_points(self):
+        return DataPoint.query(ancestor=self.key).fetch()
+
 
 class DataPoint(ndb.Model):
     temperature = ndb.IntegerProperty()
@@ -36,6 +43,7 @@ class DataPoint(ndb.Model):
     humidity = ndb.IntegerProperty()
     light = ndb.IntegerProperty()
     saturation = ndb.IntegerProperty()
+    created = ndb.DateTimeProperty(auto_now_add=True)
 
 
 class Crop(ndb.Model):

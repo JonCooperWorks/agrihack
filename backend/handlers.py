@@ -8,7 +8,7 @@ import string
 from google.appengine.ext import ndb
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 
-from backend import BaseHandler
+from backend import BaseHandler, sms_commands
 from models import DataPoint, Farmer, Node, SMSMessage
 
 
@@ -41,7 +41,20 @@ class ImportHandler(BaseHandler):
                 main_activity='Farming',
             ))
 
-        ndb.put_multi(farmers + [Node(node_id='00420')])
+        node = Node(node_id='00420')
+        ndb.put_multi(farmers + [node])
+
+        points = []
+        for _ in range(50):
+            DataPoint(
+                temperature=random.randint(40, 90),
+                pressure=random.randint(20, 30),
+                humidity=random.randint(65, 100),
+                light=random.randint(0, 100),
+                saturation=random.randint(30, 90),
+                parent=node.key,
+            ).put()
+
         return self.json_response({'status': 'done'})
 
 
@@ -56,6 +69,7 @@ class SMSHandler(InboundMailHandler):
                 mail_message.sender)
             sms_message = SMSMessage(body=body.decode(), sender=sender)
             sms_message.put()
+            sms_commands.handle(sms_message)
             logging.info('Stored message from %s' % sender)
 
 
