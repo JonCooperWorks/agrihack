@@ -18,7 +18,6 @@ def handle(sms_message):
     elif sms_message.to == 'status@node-420.appspotmail.com':
         farmer_id, node_id = message_body.split(' ')[1:]
         node = Node.get_by_node_id(node_id)
-        logging.info(sms_message.sender)
         if node is None:
             logging.error('Node not found')
             return send_sms(
@@ -27,7 +26,7 @@ def handle(sms_message):
             )
 
         logging.info('Node found')
-        return reply_node_status(farmer_id, node)
+        return reply_node_status(sms_message.sender, node)
 
 
 def reply_farmer_id(cell_number):
@@ -90,10 +89,6 @@ Stats for {node_id}:
         **sensor_summary
     )
 
-    # Get averages and compare with guidelines for that crop then send SMS to
-    # farmer.
-    # Since this is a demo, we'll text everyone.
-    for farmer in Farmer.query():
-        send_sms(farmer.cell_number, message)
+    send_sms(farmer_id, message)
 
     logging.info(message)

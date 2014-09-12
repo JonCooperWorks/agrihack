@@ -72,6 +72,7 @@ class SMSHandler(InboundMailHandler):
             )
             sms_message.put()
             sms_commands.handle(sms_message)
+            logging.info(sender)
             logging.info('Stored message from %s' % sender)
 
 
