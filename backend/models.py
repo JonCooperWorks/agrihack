@@ -4,6 +4,7 @@ from google.appengine.ext import ndb
 class SMSMessage(ndb.Model):
     body = ndb.StringProperty()
     sender = ndb.StringProperty()
+    to = ndb.StringProperty()
 
 
 class Farmer(ndb.Model):

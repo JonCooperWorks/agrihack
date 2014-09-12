@@ -77,9 +77,10 @@ class BaseHandler(webapp2.RequestHandler):
         return self.response.write(json.dumps(data))
 
 
-def send_sms(phone_number, body):
+def send_sms(phone_number, body, sender=None):
+    sender = sender or 'status@node-420.appspotmail.com'
     return mail.send_mail(
-        sender='status@node-420.appspotmail.com',
+        sender=sender,
         to='%s@digitextjm.com' % phone_number,
         subject='',
         body=body)

@@ -2,7 +2,6 @@ import datetime
 import json
 import logging
 import random
-import re
 import string
 
 from google.appengine.ext import ndb
@@ -63,21 +62,14 @@ class SMSHandler(InboundMailHandler):
     """Handles inbound SMS messages from farmers."""
 
     def receive(self, mail_message):
-        if mail_message.to == 'demo@node-420.appspotmail.com':
-            logging.info('Message received')
-            return
-
-        if mail_message.to == 'whoami@node-420.appspotmail.com':
-            sender_num = mail_message.sender[:11]
-            logging.info('Message received from: ' + sender_num)
-            sms_commands.reply_farmer_id(sender_num)
-
         for message in mail_message.bodies('text/html'):
             _, body = message
-            sender, = re.findall(
-                r'([0-9]{11})@mms.digicelgroup.com',
-                mail_message.sender)
-            sms_message = SMSMessage(body=body.decode(), sender=sender)
+            sender = mail_message.sender[:11]
+            sms_message = SMSMessage(
+                body=body.decode(),
+                sender=sender,
+                to=mail_message.to,
+            )
             sms_message.put()
             sms_commands.handle(sms_message)
             logging.info('Stored message from %s' % sender)

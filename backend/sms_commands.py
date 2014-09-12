@@ -7,8 +7,15 @@ from backend.models import Farmer, Node
 
 def handle(sms_message):
     message_body = sms_message.body
-    command_name = message_body.split(' ')[0]
-    if command_name.lower() == 'status':
+    if sms_message.to == 'demo@node-420.appspotmail.com':
+        logging.info('Message received')
+        return
+
+    elif sms_message.to == 'whoami@node-420.appspotmail.com':
+        logging.info('Message received from: ' + sms_message.sender)
+        return reply_farmer_id(sms_message.sender)
+
+    elif sms_message.to == 'status@node-420.appspotmail.com':
         farmer_id, node_id = message_body.split(' ')[1:]
         node = Node.get_by_node_id(node_id)
         if node is None:
@@ -20,8 +27,6 @@ def handle(sms_message):
 
         logging.info('Node found')
         return reply_node_status(farmer_id, node)
-    elif command_name.lower() == 'whoami':
-        return reply_farmer_id(sms_message.sender)
 
 
 def reply_farmer_id(cell_number):
@@ -38,7 +43,8 @@ Your farmer ID is {farmer.farmer_id}.
 """.format(farmer=farmer)
     send_sms(
         cell_number,
-        message
+        message,
+        sender='whoami@node-420.appspotmail.com',
     )
     logging.info(message)
 
