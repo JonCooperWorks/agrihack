@@ -84,7 +84,7 @@ class DataPointHandler(BaseHandler):
 
     def post(self):
         sensor_data = json.loads(self.request.body)
-        node = Node.get_by_node_id(sensor_data['node_id'])
+        node = Node.get_by_node_id(str(sensor_data['node_id']))
         if not node:
             return self.abort(404)
 
