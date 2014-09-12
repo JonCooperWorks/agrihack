@@ -5,7 +5,8 @@ import config
 
 
 routes = [
-    ('/api/', handlers.MainHandler),
+    ('/import/', handlers.ImportHandler),
+    ('/datapoint/', handlers.DataPointHandler),
     handlers.SMSHandler.mapping(),
 ]
 

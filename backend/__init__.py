@@ -1,3 +1,4 @@
+import json
 import os
 
 from google.appengine.api import memcache
@@ -71,6 +72,9 @@ class BaseHandler(webapp2.RequestHandler):
 
     def is_devappserver_request(self):
         return os.environ.get('APPLICATION_ID', '').startswith('dev~')
+
+    def json_response(self, data):
+        return self.response.write(json.dumps(data))
 
 
 def send_sms(phone_number, body):
