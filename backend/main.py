@@ -6,6 +6,7 @@ import config
 
 routes = [
     ('/api/', handlers.MainHandler),
+    handlers.SMSHandler.mapping(),
 ]
 
 
