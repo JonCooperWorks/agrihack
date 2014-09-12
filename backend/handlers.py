@@ -68,7 +68,8 @@ class SMSHandler(InboundMailHandler):
             return
         
         if mail_message.to == 'whoami@node-420.appspotmail.com':
-            logging.info('Message received from: ' + mail_message.sender)
+            sender1 = re.findall(r'\<(.*)\>', mail_message.sender)
+            logging.info('Message received from: ' + sender1)
             return
 
         for message in mail_message.bodies('text/html'):
