@@ -1,6 +1,7 @@
 import os
 
 from google.appengine.api import memcache
+from google.appengine.api import mail
 import webapp2
 from webapp2_extras import jinja2
 
@@ -70,3 +71,11 @@ class BaseHandler(webapp2.RequestHandler):
 
     def is_devappserver_request(self):
         return os.environ.get('APPLICATION_ID', '').startswith('dev~')
+
+
+def send_sms(phone_number, body):
+    return mail.send_mail(
+        sender='alerts@420-node.appspot.com',
+        to='%s@digitextjm.com' % phone_number,
+        subject='',
+        body=body)
