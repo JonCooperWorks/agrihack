@@ -18,6 +18,7 @@ def handle(sms_message):
     elif sms_message.to == 'status@node-420.appspotmail.com':
         farmer_id, node_id = message_body.split(' ')[1:]
         node = Node.get_by_node_id(node_id)
+        logging.info(sms_message.sender)
         if node is None:
             logging.error('Node not found')
             return send_sms(
