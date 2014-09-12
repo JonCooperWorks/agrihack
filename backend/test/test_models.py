@@ -28,6 +28,11 @@ class FarmerTestCase(TestCase, unittest2.TestCase):
         farmer = Farmer.get_by_farmer_id('TEST')
         self.assertEqual(farmer_key, farmer.key)
 
+    def test_get_by_cell_number(self):
+        farmer_key = Farmer(cell_number='18764243385').put()
+        farmer = Farmer.get_by_cell_number('18764243385')
+        self.assertEqual(farmer_key, farmer.key)
+
 
 class NodeTestCase(TestCase, unittest2.TestCase):
 
