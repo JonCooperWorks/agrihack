@@ -58,4 +58,5 @@ class DataPointTestCase(TestCase, unittest2.TestCase):
         self.assertIsNone(data_point.pressure)
         self.assertIsNone(data_point.saturation)
         self.assertIsNone(data_point.temperature)
-        self.assertTrue(datetime.datetime.now() - data_point.created < datetime.timedelta(minutes=5))
+        self.assertTrue(datetime.datetime.now() -
+                        data_point.created < datetime.timedelta(minutes=5))
