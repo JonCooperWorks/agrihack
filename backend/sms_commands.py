@@ -6,21 +6,44 @@ from backend.models import Farmer, Node
 
 
 def handle(sms_message):
-    command_name, farmer_id, node_id = sms_message.body.split(' ')
-    command = COMMANDS[command_name.lower()]
-    node = Node.get_by_node_id(node_id)
-    if node is None:
-        logging.error('Node not found')
+    message_body = sms_message.body
+    command_name = message_body.split(' ')[0]
+    if command_name.lower() == 'status':
+        farmer_id, node_id = message_body.split(' ')[1:]
+        node = Node.get_by_node_id(node_id)
+        if node is None:
+            logging.error('Node not found')
+            return send_sms(
+                sms_message.sender,
+                'You don\'t have any %s' % node_id
+            )
+
+        logging.info('Node found')
+        return reply_node_status(farmer_id, node)
+    elif command_name.lower() == 'whoami':
+        return reply_farmer_id(sms_message.sender)
+
+
+def reply_farmer_id(cell_number):
+    farmer = Farmer.get_by_cell_number(cell_number)
+    if farmer is None:
+        logging.error('Farmer not found')
         return send_sms(
-            sms_message.sender,
-            'You don\'t have any %s' % node_id
+            cell_number,
+            'Register with RADA to access this service.'
         )
+    message = """
+Hello, {farmer.first_name} {farmer.last_name}!
+Your farmer ID is {farmer.farmer_id}.
+""".format(farmer=farmer)
+    send_sms(
+        cell_number,
+        message
+    )
+    logging.info(message)
 
-    logging.info('Node found')
-    return command(farmer_id, node)
 
-
-def get_node_status(farmer_id, node):
+def reply_node_status(farmer_id, node):
     """Responds to a message in the form
 
         STATUS <FARMER_ID> <NODE_ID>
@@ -67,8 +90,3 @@ Stats for {node_id}:
         send_sms(farmer.cell_number, message)
 
     logging.info(message)
-
-
-COMMANDS = {
-    'status': get_node_status
-}

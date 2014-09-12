@@ -25,6 +25,10 @@ class Farmer(ndb.Model):
     def get_by_farmer_id(cls, farmer_id):
         return cls.query().filter(cls.farmer_id == farmer_id).get()
 
+    @classmethod
+    def get_by_cell_number(cls, cell_number):
+        return cls.query().filter(cls.cell_number == cell_number).get()
+
 
 class Node(ndb.Model):
     node_id = ndb.StringProperty()
