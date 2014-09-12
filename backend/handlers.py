@@ -46,14 +46,15 @@ class ImportHandler(BaseHandler):
 
         points = []
         for _ in range(50):
-            DataPoint(
+            points.append(DataPoint(
                 temperature=random.randint(40, 90),
                 pressure=random.randint(20, 30),
                 humidity=random.randint(65, 100),
                 light=random.randint(0, 100),
                 saturation=random.randint(30, 90),
                 parent=node.key,
-            ).put()
+            ))
+        ndb.put_multi(points)
 
         return self.json_response({'status': 'done'})
 
