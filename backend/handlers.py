@@ -9,7 +9,7 @@ from google.appengine.ext import ndb
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 
 from backend import BaseHandler
-from models import Farmer, SMSMessage
+from models import DataPoint, Farmer, Node, SMSMessage
 
 
 class ImportHandler(BaseHandler):
@@ -59,7 +59,7 @@ class SMSHandler(InboundMailHandler):
             logging.info('Stored message from %s' % sender)
 
 
-class NodeDataHandler(BaseHandler):
+class DataPointHandler(BaseHandler):
     """Handles inbound data from a Node 420 in the field.
 
     The field Node 420 sends data points in POST requests to this handler,
@@ -67,7 +67,13 @@ class NodeDataHandler(BaseHandler):
 
     def post(self):
         sensor_data = json.loads(self.request.body)
+        node = Node.get_by_node_id(sensor_data['node_id'])
+        if not node:
+            return self.abort(404)
+
+        del sensor_data['node_id']
         DataPoint(**sensor_data).put()
+        self.response.status_code = 201
         return self.json_response({'status': 'success'})
 
 
