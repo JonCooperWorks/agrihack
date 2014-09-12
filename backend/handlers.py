@@ -44,7 +44,6 @@ class ImportHandler(BaseHandler):
         node = Node(node_id='00420')
         ndb.put_multi(farmers + [node])
 
-        points = []
         for _ in range(50):
             DataPoint(
                 temperature=random.randint(40, 90),
