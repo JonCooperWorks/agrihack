@@ -18,8 +18,7 @@ class ImportHandler(BaseHandler):
         # If we've already imported farmers, don't bother to import them from
         # the JSON file.
         if Farmer.query().count() > 0:
-            return self.response.write(
-                json.dumps({'status': 'already_populated'}))
+            return self.json_response({'status': 'already_populated'})
 
         with open('attendees.json') as attendees_file:
             attendees = json.loads(attendees_file.read())
@@ -43,7 +42,7 @@ class ImportHandler(BaseHandler):
             ))
 
         ndb.put_multi(farmers)
-        return self.response.write(json.dumps({'status': 'done'}))
+        return self.json_response({'status': 'done'})
 
 
 class SMSHandler(InboundMailHandler):
@@ -52,13 +51,24 @@ class SMSHandler(InboundMailHandler):
     def receive(self, mail_message):
         for message in mail_message.bodies('text/html'):
             _, body = message
-            # Parse phone number from <phone-number>@mms.digicelgroup.com
             sender, = re.findall(
                 r'([0-9]{11})@mms.digicelgroup.com',
                 mail_message.sender)
             sms_message = SMSMessage(body=body.decode(), sender=sender)
             sms_message.put()
             logging.info('Stored message from %s' % sender)
+
+
+class NodeDataHandler(BaseHandler):
+    """Handles inbound data from a Node 420 in the field.
+
+    The field Node 420 sends data points in POST requests to this handler,
+    that are persisted to the Datastore."""
+
+    def post(self):
+        sensor_data = json.loads(self.request.body)
+        DataPoint(**sensor_data).put()
+        return self.json_response({'status': 'success'})
 
 
 def generate_farmer_id():
