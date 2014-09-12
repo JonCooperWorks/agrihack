@@ -66,7 +66,7 @@ class SMSHandler(InboundMailHandler):
         if mail_message.to == 'demo@node-420.appspotmail.com':
             logging.info('Message received')
             return
-        
+
         if mail_message.to == 'whoami@node-420.appspotmail.com':
             sender_num = mail_message.sender[:11]
             logging.info('Message received from: ' + sender_num)
