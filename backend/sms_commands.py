@@ -43,7 +43,6 @@ Your farmer ID is {farmer.farmer_id}.
     logging.info(message)
 
 
-
 def reply_node_status(farmer_id, node):
     """Responds to a message in the form
 

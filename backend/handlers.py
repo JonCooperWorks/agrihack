@@ -33,7 +33,8 @@ class ImportHandler(BaseHandler):
                 house_number=cell_number,
                 farmer_id=generate_farmer_id(),
                 verified=True,
-                dob=datetime.datetime.now() - datetime.timedelta(days=20*365),
+                dob=datetime.datetime.now() -
+                datetime.timedelta(days=20 * 365),
                 address='Computer Science Postgrab Lab',
                 alias=generate_alias(first_name, last_name),
                 farmer_idx=random.randint(1, 100000),
@@ -58,6 +59,7 @@ class ImportHandler(BaseHandler):
 
 
 class SMSHandler(InboundMailHandler):
+
     """Handles inbound SMS messages from farmers."""
 
     def receive(self, mail_message):
@@ -77,6 +79,7 @@ class SMSHandler(InboundMailHandler):
 
 
 class DataPointHandler(BaseHandler):
+
     """Handles inbound data from a Node 420 in the field.
 
     The field Node 420 sends data points in POST requests to this handler,
