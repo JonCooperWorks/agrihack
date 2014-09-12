@@ -7,7 +7,7 @@ import string
 from google.appengine.ext import ndb
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 
-from backend import BaseHandler, sms_commands
+from backend import BaseHandler, sms_commands, send_sms
 from models import DataPoint, Farmer, Node, SMSMessage
 
 
@@ -54,6 +54,13 @@ class ImportHandler(BaseHandler):
                 parent=node.key,
             ).put()
 
+        message = """
+Low light on tomato patch.
+Low barometric pressure.
+Possibility of rain.
+"""
+        for farmer in farmers:
+            send_sms(farmer.cell_number, message)
         return self.json_response({'status': 'done'})
 
 
@@ -90,7 +97,9 @@ class DataPointHandler(BaseHandler):
             return self.abort(404)
 
         del sensor_data['node_id']
-        sensor_data = {key: int(value) for key, value in sensor_data.iteritems()}
+        sensor_data = {key: int(value)
+                       for key, value in
+                       sensor_data.iteritems()}
         DataPoint(parent=node.key, **sensor_data).put()
         self.response.status_int = 201
         return self.json_response({'status': 'success'})
