@@ -9,8 +9,7 @@ class SMSMessage(ndb.Model):
 class Farmer(ndb.Model):
     farmer_idx = ndb.IntegerProperty()
     farmer_id = ndb.StringProperty()
-    first_name = ndb.StringProperty()
-    last_name = ndb.StringProperty()
+    name = ndb.StringProperty()
     alias = ndb.StringProperty()
     address = ndb.StringProperty()
     parish = ndb.StringProperty()
@@ -19,6 +18,7 @@ class Farmer(ndb.Model):
     verified = ndb.BooleanProperty(default=False)
     dob = ndb.DateProperty()
     main_activity = ndb.StringProperty()
+    field = ndb.StringProperty()
 
 
 class Node(ndb.Model):
