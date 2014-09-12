@@ -41,7 +41,7 @@ class ImportHandler(BaseHandler):
                 main_activity='Farming',
             ))
 
-        node = Node(node_id='00420')
+        node = Node(node_id='Tomatoes')
         ndb.put_multi(farmers + [node])
 
         for _ in range(50):
