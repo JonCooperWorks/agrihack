@@ -9,7 +9,8 @@ class SMSMessage(ndb.Model):
 class Farmer(ndb.Model):
     farmer_idx = ndb.IntegerProperty()
     farmer_id = ndb.StringProperty()
-    name = ndb.StringProperty()
+    first_name = ndb.StringProperty()
+    last_name = ndb.StringProperty()
     alias = ndb.StringProperty()
     address = ndb.StringProperty()
     parish = ndb.StringProperty()

@@ -1,15 +1,18 @@
 import datetime
 import json
+import logging
 import random
+import re
 import string
 
 from google.appengine.ext import ndb
+from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 
 from backend import BaseHandler
-from models import Farmer
+from models import Farmer, SMSMessage
 
 
-class MainHandler(BaseHandler):
+class ImportHandler(BaseHandler):
 
     def get(self):
         # If we've already imported farmers, don't bother to import them from
